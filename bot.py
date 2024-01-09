@@ -6,7 +6,10 @@ from config_reader import config
 
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
+
 from handlers import common
+from handlers import choice_currency
 
 
 async def main(maintenance_mode: bool = False):
@@ -15,7 +18,7 @@ async def main(maintenance_mode: bool = False):
                         format="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
 
     # bot
-    bot = Bot(token=config.bot_token.get_secret_value(), parse_mode=None)
+    bot = Bot(token=config.bot_token.get_secret_value(), parse_mode=ParseMode.HTML)
     # Диспетчер
     # В реальной жизни значение maintenance_mode будет взято из стороннего источника (например, конфиг или через API)
     # bool тип является иммутабельным, его смена в рантайме ни на что не повлияет
@@ -25,6 +28,7 @@ async def main(maintenance_mode: bool = False):
 
     # подключаем обработчики
     dp.include_router(common.router)
+    dp.include_router(choice_currency.router)
 
     # Удаляем все обновления, которые произошли после последнего завершения работы бота
     await bot.delete_webhook(drop_pending_updates=True)

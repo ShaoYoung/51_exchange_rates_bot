@@ -15,3 +15,7 @@ def get_currencies() -> dict:
         'NZD': 'Новозеландский доллар',
     }
     return currencies
+
+
+
+# TODO Сделать запрос курсов валют (функция)
