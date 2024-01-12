@@ -24,14 +24,22 @@ async def cmd_start(message: Message, state: FSMContext):
     keyboard = get_reply_keyboard(['Возврат в основное меню'], [1])
     await message.answer(text='Я знаю курсы валют.', reply_markup=keyboard)
 
-    # Пока валюты получаем из словаря. Может быть потом будет список.
+    # # Пока валюты получаем из словаря. Может быть потом будет список.
+    # buttons = {}
+    # for key, value in calculation.get_currencies().items():
+    #     buttons.update({f'{key} - {value}': {
+    #         'action': 'choice',
+    #         'currency': key
+    #     }})
+
+    # Получаем валюты из словаря er-api.
     buttons = {}
-    for key, value in calculation.get_currencies().items():
-        buttons.update({f'{key} - {value}': {
+    for key in calculation.get_all_exchange_rates_erapi()['exchange_rates'].keys():
+        buttons.update({key: {
             'action': 'choice',
             'currency': key
         }})
-    keyboard = get_inline_keyboard(buttons, [2])
+    keyboard = get_inline_keyboard(buttons, [6])
     await message.answer(text='Выберите первую валюту:', reply_markup=keyboard)
     # Устанавливаем пользователю состояние 'choosing_first_currency'
     await state.set_state(UserState.choosing_first_currency)
@@ -50,16 +58,26 @@ async def return_in_main_menu(message: Message, state: FSMContext):
     await cmd_start(message, state)
 
 
+@router.message(F.text == 'Возврат к выбору первой валюты')
+async def return_in_main_menu(message: Message, state: FSMContext):
+    """
+    Возврат к выбору первой валюты (фактически дубль 'Возврата в основное меню', сделано просто для примера)
+    :param message: сообщение
+    :param state: текущий статус
+    :return: None
+    """
+    # очистка State
+    await state.clear()
+    await cmd_start(message, state)
+
+
 @router.message(F.text.startswith(''))
 async def cmd_incorrectly(message: Message):
     """
-    Обработчик всех неизвестных команд
+    Обработчик всех неизвестных команд (если ни один из обработчиков этого роутера не сработал и пришёл текст
     :param message: сообщение
     :return: None
     """
     await message.reply(f'Я не знаю команду <b>"{message.text}"</b>')
     await message.answer('Пожалуйста, повторите ввод или нажмите кнопку ниже')
-
-
-# TODO сделать Reply кнопку для возврата на шаг назад (доступно после выбора первой валюты)
 

@@ -34,6 +34,7 @@ def get_inline_keyboard(buttons: dict, adjust: list) -> InlineKeyboardMarkup:
     :return: InlineKeyboardMarkup
     """
     builder = InlineKeyboardBuilder()
+    # builder.button(text='Сайт ЦБ РФ', url='https://www.cbr.ru/')
     for key, value in buttons.items():
         builder.button(text=key, callback_data=CurrencyCallbackFactory(action=value['action'], currency=value['currency']))
     builder.adjust(*adjust)
