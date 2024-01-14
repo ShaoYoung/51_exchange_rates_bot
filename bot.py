@@ -11,6 +11,9 @@ from aiogram.enums import ParseMode
 from handlers import common
 from handlers import choice_currency
 
+# bot
+# bot = Bot(token=config.bot_token.get_secret_value(), parse_mode=ParseMode.HTML)
+
 
 async def main(maintenance_mode: bool = False):
     # включаем логирование
@@ -18,7 +21,9 @@ async def main(maintenance_mode: bool = False):
                         format="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
 
     # bot
+    # для импорта bot в обработчиках его можно сделать глобальным
     bot = Bot(token=config.bot_token.get_secret_value(), parse_mode=ParseMode.HTML)
+
     # Диспетчер
     # В реальной жизни значение maintenance_mode будет взято из стороннего источника (например, конфиг или через API)
     # bool тип является иммутабельным, его смена в рантайме ни на что не повлияет
@@ -40,8 +45,4 @@ async def main(maintenance_mode: bool = False):
 if __name__ == "__main__":
     # точка входа
     asyncio.run(main())
-
-
-
-
 
