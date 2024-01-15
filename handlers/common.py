@@ -148,7 +148,6 @@ async def cmd_get_bot_users(message: Message):
     :param message:
     :return:
     """
-    global registered_users_id
     if os.path.exists(bot_users_file):
         with open(bot_users_file, 'r') as json_file:
             registered_users = json.load(json_file)
