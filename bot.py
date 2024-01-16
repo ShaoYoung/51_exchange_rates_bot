@@ -20,6 +20,14 @@ async def main(maintenance_mode: bool = False):
     logging.basicConfig(level=logging.INFO, filename="log.log", filemode="a",
                         format="%(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
 
+
+    # Deploy на pythonanywhere
+    # https://docs.aiogram.dev/en/dev-3.x/api/session/aiohttp.html
+    # from aiogram.client.session.aiohttp import AiohttpSession
+    #
+    # session = AiohttpSession(proxy="protocol://host:port/")
+    # bot = Bot(token="bot_token", session=session)
+
     # bot
     # для импорта bot в обработчиках его можно сделать глобальным
     bot = Bot(token=config.bot_token.get_secret_value(), parse_mode=ParseMode.HTML)
